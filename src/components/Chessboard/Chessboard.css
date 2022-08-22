@@ -5,15 +5,3 @@
     width: 800px;
     height: 800px;
 }
-.tile{
-    width: 100px;
-    height: 100px;
-
-}
-
-.black-tile{
-    background-color: #779556;
-}
-.white-tile{
-    background-color: #ebecd0;
-}
