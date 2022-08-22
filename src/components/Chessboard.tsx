@@ -16,7 +16,7 @@ const Chessboard = () => {
             }else{
                 colorTile = 'white-tile'
             }
-            board.push(<div className={`tile ${colorTile}`}> {horizontalAxis[i]}:{verticalAxis[j]}</div>)
+            board.push(<div  className={`tile ${colorTile}`}></div>)
         }
     }
 
