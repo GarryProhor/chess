@@ -1,4 +1,4 @@
-import {PieceType, TeamType, Piece} from "../components/Chessboard";
+import {Piece, PieceType, TeamType} from "../components/Chessboard";
 
 export default class Referee {
 
@@ -30,41 +30,24 @@ export default class Referee {
         console.log(`type: (${type}) `);
         console.log(`team: (${team}) `);
 
-        if (type === PieceType.PAWN) {
-            if (team === TeamType.OUR) {
-                if (py === 1) {
-                    if (px === x && y - py === 1) {
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
-                    }else if(px === x && y - py === 2){
-                        if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y-1, boardState)) {
-                            return true;
-                        }
+        if(type === PieceType.PAWN){
+            const specialRow = (team === TeamType.OUR) ? 1 : 6;
+            const specialDirection = (team === TeamType.OUR) ? 1 : -1;
+
+            if(py === specialRow){
+                if(px === x && y - py === specialDirection){
+                    if (!this.tileIsOccupied(x, y, boardState)) {
+                        return true;
                     }
-                } else {
-                    if (px === x && y - py === 1) {
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
+                }else if(px === x && y - py === 2*specialDirection){
+                    if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - specialDirection, boardState)) {
+                        return true;
                     }
                 }
-            } else {
-                if (py === 6) {
-                    if (px === x && y - py === -1) {
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
-                    }else if(px === x && y - py === -2){
-                        if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y+1, boardState)) {
-                            return true;
-                        }
-                    }
-                } else {
-                    if (px === x && y - py === -1) {
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
+            }else{
+                if (px === x && y - py === specialDirection){
+                    if(!this.tileIsOccupied(x,y,boardState)){
+                        return true;
                     }
                 }
             }
