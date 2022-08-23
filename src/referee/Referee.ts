@@ -34,25 +34,18 @@ export default class Referee {
             const specialRow = (team === TeamType.OUR) ? 1 : 6;
             const specialDirection = (team === TeamType.OUR) ? 1 : -1;
 
-            if(py === specialRow){
-                if(px === x && y - py === specialDirection){
-                    if (!this.tileIsOccupied(x, y, boardState)) {
-                        return true;
-                    }
-                }else if(px === x && y - py === 2*specialDirection){
-                    if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - specialDirection, boardState)) {
-                        return true;
-                    }
+            if(px === x && py === specialRow && y - py === 2*specialDirection){
+                if (!this.tileIsOccupied(x, y, boardState) &&
+                    !this.tileIsOccupied(x, y - specialDirection, boardState)
+                ) {
+                    return true;
                 }
-            }else{
-                if (px === x && y - py === specialDirection){
-                    if(!this.tileIsOccupied(x,y,boardState)){
-                        return true;
-                    }
+            }else if(px === x && y - py === specialDirection){
+                if (!this.tileIsOccupied(x, y, boardState)) {
+                    return true;
                 }
             }
         }
-
         return false;
     }
 }
