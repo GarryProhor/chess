@@ -18,7 +18,7 @@ const Tile = ({number, colorTile, image}: ITile) => {
     }
     return (
         <div  className={`tile ${colorTile}`}>
-            <img src={image} alt={image}/>
+            {image && <div style={{backgroundImage: `url(${image})`}} className='chess-piece'></div>}
         </div>
     );
 };
