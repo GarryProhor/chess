@@ -1,4 +1,4 @@
-![](Снимок экрана 2022-08-23 215133.png)
+
 
 # Getting Started with Create React App
 
