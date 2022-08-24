@@ -13,7 +13,8 @@ export interface Piece {
     x: number;
     y: number;
     type: PieceType;
-    team: TeamType
+    team: TeamType;
+    enPassant?: boolean;
 }
 
 export enum TeamType {
@@ -125,6 +126,7 @@ const Chessboard = () => {
 
             if (currentPiece) {
                 const validMove = referee.isValidMove(gridX, gridY, x, y, currentPiece.type, currentPiece.team, pieces);
+                const isEnPassantMove = referee.isEnPassantMove(gridX, gridY, x, y, currentPiece.type, currentPiece.team, pieces);
 
                 if (validMove) {
                     const updatePieces = pieces.reduce((result, piece) => {
