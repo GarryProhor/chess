@@ -120,30 +120,44 @@ export default class Referee {
             //    moving logic for the BISHOP
             //up right
             for(let i=1; i<8; i++){
+                if(desiredPosition.x>initialPosition.x && desiredPosition.y>initialPosition.y){
+                    let passedPosition: Position = {x:initialPosition.x+i, y:initialPosition.y+i};
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
                 if(desiredPosition.x-initialPosition.x === i && desiredPosition.y-initialPosition.y === i){
-
-                    break;
+                    return true;
                 }
-            }
-            //bottom right
-            for(let i=1; i<8; i++){
+                //bottom right
+                if(desiredPosition.x>initialPosition.x && desiredPosition.y<initialPosition.y){
+                    let passedPosition: Position = {x:initialPosition.x+i, y:initialPosition.y-i};
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
                 if(desiredPosition.x-initialPosition.x === i && desiredPosition.y-initialPosition.y === -i){
-
-                    break;
+                    return true;
                 }
-            }
-            //bottom left
-            for(let i=1; i<8; i++){
+                //bottom left
+                if(desiredPosition.x<initialPosition.x && desiredPosition.y<initialPosition.y){
+                    let passedPosition: Position = {x:initialPosition.x-i, y:initialPosition.y-i};
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
                 if(desiredPosition.x-initialPosition.x === -i && desiredPosition.y-initialPosition.y === -i){
-
-                    break;
+                    return true;
                 }
-            }
-            //up left
-            for(let i=1; i<8; i++){
+                //up left
+                if(desiredPosition.x<initialPosition.x && desiredPosition.y>initialPosition.y){
+                    let passedPosition: Position = {x:initialPosition.x-i, y:initialPosition.y+i};
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
                 if(desiredPosition.x-initialPosition.x === -i && desiredPosition.y-initialPosition.y === i){
-
-                    break;
+                    return true;
                 }
             }
         }
