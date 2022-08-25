@@ -116,6 +116,36 @@ export default class Referee {
                     }
                 }
             }
+        }else if (type === PieceType.BISHOP) {
+            //    moving logic for the BISHOP
+            //up right
+            for(let i=1; i<8; i++){
+                if(desiredPosition.x-initialPosition.x === i && desiredPosition.y-initialPosition.y === i){
+
+                    break;
+                }
+            }
+            //bottom right
+            for(let i=1; i<8; i++){
+                if(desiredPosition.x-initialPosition.x === i && desiredPosition.y-initialPosition.y === -i){
+
+                    break;
+                }
+            }
+            //bottom left
+            for(let i=1; i<8; i++){
+                if(desiredPosition.x-initialPosition.x === -i && desiredPosition.y-initialPosition.y === -i){
+
+                    break;
+                }
+            }
+            //up left
+            for(let i=1; i<8; i++){
+                if(desiredPosition.x-initialPosition.x === -i && desiredPosition.y-initialPosition.y === i){
+
+                    break;
+                }
+            }
         }
         return false;
     }
