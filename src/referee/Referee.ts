@@ -193,7 +193,7 @@ export default class Referee {
         return false;
     }
 
-    bookMove(
+    rookMove(
         initialPosition: Position,
         desiredPosition: Position,
         team: TeamType,
@@ -236,6 +236,86 @@ export default class Referee {
         return false;
     }
 
+    queenMove(
+        initialPosition: Position,
+        desiredPosition: Position,
+        team: TeamType,
+        boardState: Piece[]
+    ): boolean {
+        for (let i=1; i<8; i++) {
+            //top
+            if (desiredPosition.y > initialPosition.y && desiredPosition.x === initialPosition.x) {
+                let passedPosition: Position = {x: initialPosition.x, y: initialPosition.y + i};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
+                        break;
+                    }
+                }
+            }
+            //right
+            if (desiredPosition.y === initialPosition.y && desiredPosition.x > initialPosition.x) {
+                let passedPosition: Position = {x: initialPosition.x + i, y: initialPosition.y};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
+                        break;
+                    }
+                }
+            }
+            //bottom
+            if (desiredPosition.y < initialPosition.y && desiredPosition.x === initialPosition.x) {
+                let passedPosition: Position = {x: initialPosition.x, y: initialPosition.y - i};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
+                        break;
+                    }
+                }
+            }
+            //left
+            if (desiredPosition.y === initialPosition.y && desiredPosition.x < initialPosition.x) {
+                let passedPosition: Position = {x: initialPosition.x - i, y: initialPosition.y};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
+                        break;
+                    }
+                }
+            }
+
+            //top right
+            if (desiredPosition.y > initialPosition.y && desiredPosition.x > initialPosition.x) {
+
+            }
+            //bottom right
+            if (desiredPosition.y < initialPosition.y && desiredPosition.x > initialPosition.x) {
+
+            }
+            //bottom left
+            if (desiredPosition.y < initialPosition.y && desiredPosition.x < initialPosition.x) {
+
+            }
+            //top left
+            if (desiredPosition.y > initialPosition.y && desiredPosition.x < initialPosition.x) {
+
+            }
+        }
+        return false;
+    }
+
     isValidMove(
         initialPosition: Position,
         desiredPosition: Position,
@@ -261,7 +341,10 @@ export default class Referee {
                 validMove = this.bishopMove(initialPosition, desiredPosition, team, boardState);
                 break;
             case PieceType.ROOK:
-                validMove = this.bookMove(initialPosition, desiredPosition, team, boardState);
+                validMove = this.rookMove(initialPosition, desiredPosition, team, boardState);
+                break;
+            case PieceType.QUEEN:
+                validMove = this.queenMove(initialPosition, desiredPosition, team, boardState);
                 break;
         }
         return validMove;
