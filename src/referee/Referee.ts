@@ -56,36 +56,36 @@ export default class Referee {
         desiredPosition: Position,
         team: TeamType,
         boardState: Piece[]
-    ):boolean{
+    ): boolean {
 
-            const specialRow = (team === TeamType.OUR) ? 1 : 6;
-            const specialDirection = (team === TeamType.OUR) ? 1 : -1;
+        const specialRow = (team === TeamType.OUR) ? 1 : 6;
+        const specialDirection = (team === TeamType.OUR) ? 1 : -1;
 
-            //movement logic
-            if (initialPosition.x === desiredPosition.x && initialPosition.y === specialRow && desiredPosition.y - initialPosition.y === 2 * specialDirection) {
-                if (!this.tileIsOccupied(desiredPosition, boardState) &&
-                    !this.tileIsOccupied({x: desiredPosition.x, y: desiredPosition.y - specialDirection}, boardState)
-                ) {
-                    return true;
-                }
-            } else if (initialPosition.x === desiredPosition.x && desiredPosition.y - initialPosition.y === specialDirection) {
-                if (!this.tileIsOccupied(desiredPosition, boardState)) {
-                    return true;
-                }
+        //movement logic
+        if (initialPosition.x === desiredPosition.x && initialPosition.y === specialRow && desiredPosition.y - initialPosition.y === 2 * specialDirection) {
+            if (!this.tileIsOccupied(desiredPosition, boardState) &&
+                !this.tileIsOccupied({x: desiredPosition.x, y: desiredPosition.y - specialDirection}, boardState)
+            ) {
+                return true;
             }
-            //attack logic
-            else if (desiredPosition.x - initialPosition.x === -1 && desiredPosition.y - initialPosition.y === specialDirection) {
-                //    attack in upper left corner
-                if (this.tileIsOccupiesByOpponent(desiredPosition, boardState, team)) {
-                    return true;
-                }
-            } else if (desiredPosition.x - initialPosition.x === 1 && desiredPosition.y - initialPosition.y === specialDirection) {
-                //    attack in upper right corner
-                if (this.tileIsOccupiesByOpponent(desiredPosition, boardState, team)) {
-                    return true;
-                }
+        } else if (initialPosition.x === desiredPosition.x && desiredPosition.y - initialPosition.y === specialDirection) {
+            if (!this.tileIsOccupied(desiredPosition, boardState)) {
+                return true;
             }
-            return false;
+        }
+        //attack logic
+        else if (desiredPosition.x - initialPosition.x === -1 && desiredPosition.y - initialPosition.y === specialDirection) {
+            //    attack in upper left corner
+            if (this.tileIsOccupiesByOpponent(desiredPosition, boardState, team)) {
+                return true;
+            }
+        } else if (desiredPosition.x - initialPosition.x === 1 && desiredPosition.y - initialPosition.y === specialDirection) {
+            //    attack in upper right corner
+            if (this.tileIsOccupiesByOpponent(desiredPosition, boardState, team)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     knightMove(
@@ -93,7 +93,7 @@ export default class Referee {
         desiredPosition: Position,
         team: TeamType,
         boardState: Piece[]
-    ):boolean{
+    ): boolean {
         for (let i = -1; i < 2; i += 2) {
             for (let j = -1; j < 2; j += 2) {
                 //    top/bottom line
@@ -122,7 +122,7 @@ export default class Referee {
         desiredPosition: Position,
         team: TeamType,
         boardState: Piece[]
-    ):boolean{
+    ): boolean {
         //up right
         for (let i = 1; i < 8; i++) {
             if (desiredPosition.x > initialPosition.x && desiredPosition.y > initialPosition.y) {
@@ -198,7 +198,7 @@ export default class Referee {
         desiredPosition: Position,
         team: TeamType,
         boardState: Piece[]
-    ):boolean{
+    ): boolean {
         //horizontal
         if (initialPosition.y === desiredPosition.y) {
             for (let i = 1; i < 8; i++) {
@@ -209,8 +209,8 @@ export default class Referee {
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
                     }
-                }else {
-                    if(this.tileIsOccupied(passedPosition, boardState)){
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
                         break;
                     }
                 }
@@ -226,8 +226,8 @@ export default class Referee {
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
                     }
-                }else {
-                    if(this.tileIsOccupied(passedPosition, boardState)){
+                } else {
+                    if (this.tileIsOccupied(passedPosition, boardState)) {
                         break;
                     }
                 }
@@ -249,21 +249,21 @@ export default class Referee {
         console.log(`type: (${type}) `);
         console.log(`team: (${team}) `);
 
-        let validMode = false;
-        switch (type){
+        let validMove = false;
+        switch (type) {
             case PieceType.PAWN:
-               validMode = this.pawnMove(initialPosition, desiredPosition, team, boardState);
+                validMove = this.pawnMove(initialPosition, desiredPosition, team, boardState);
                 break;
             case PieceType.KNIGHT:
-                validMode = this.knightMove(initialPosition, desiredPosition, team, boardState);
+                validMove = this.knightMove(initialPosition, desiredPosition, team, boardState);
                 break;
             case PieceType.BISHOP:
-                validMode = this.bishopMove(initialPosition, desiredPosition, team, boardState);
+                validMove = this.bishopMove(initialPosition, desiredPosition, team, boardState);
                 break;
             case PieceType.ROOK:
-                validMode = this.bookMove(initialPosition, desiredPosition, team, boardState);
+                validMove = this.bookMove(initialPosition, desiredPosition, team, boardState);
                 break;
         }
-        return validMode;
+        return validMove;
     }
 }
