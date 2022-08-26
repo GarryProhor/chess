@@ -65,6 +65,17 @@ export default class Referee {
         console.log(`type: (${type}) `);
         console.log(`team: (${team}) `);
 
+        switch (type){
+            case PieceType.PAWN:
+                break;
+            case PieceType.KNIGHT:
+                break;
+            case PieceType.BISHOP:
+                break;
+            case PieceType.ROOK:
+                break;
+        }
+
 
         if (type === PieceType.PAWN) {
             const specialRow = (team === TeamType.OUR) ? 1 : 6;
