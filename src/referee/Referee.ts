@@ -128,7 +128,7 @@ export default class Referee {
             if (desiredPosition.x > initialPosition.x && desiredPosition.y > initialPosition.y) {
                 let passedPosition: Position = {x: initialPosition.x + i, y: initialPosition.y + i};
                 //check if the tile is the destination tile
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     //    dealing with destination tile
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
@@ -145,7 +145,7 @@ export default class Referee {
             if (desiredPosition.x > initialPosition.x && desiredPosition.y < initialPosition.y) {
                 let passedPosition: Position = {x: initialPosition.x + i, y: initialPosition.y - i};
                 //check if the tile is the destination tile
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     //    dealing with destination tile
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
@@ -162,7 +162,7 @@ export default class Referee {
             if (desiredPosition.x < initialPosition.x && desiredPosition.y < initialPosition.y) {
                 let passedPosition: Position = {x: initialPosition.x - i, y: initialPosition.y - i};
                 //check if the tile is the destination tile
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     //    dealing with destination tile
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
@@ -177,7 +177,7 @@ export default class Referee {
             //up left
             if (desiredPosition.x < initialPosition.x && desiredPosition.y > initialPosition.y) {
                 let passedPosition: Position = {x: initialPosition.x - i, y: initialPosition.y + i};
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     //    dealing with destination tile
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
@@ -205,7 +205,7 @@ export default class Referee {
                 let multiplier = (desiredPosition.x < initialPosition.x) ? -1 : 1;
 
                 let passedPosition: Position = {x: initialPosition.x + (i * multiplier), y: initialPosition.y};
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
                     }
@@ -222,7 +222,7 @@ export default class Referee {
                 let multiplier = (desiredPosition.y < initialPosition.y) ? -1 : 1;
 
                 let passedPosition: Position = {x: initialPosition.x, y: initialPosition.y + (i * multiplier)};
-                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                if (samePosition(passedPosition, desiredPosition)) {
                     if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
                         return true;
                     }
@@ -244,24 +244,40 @@ export default class Referee {
     ): boolean {
         for (let i = 1; i < 8; i++) {
             //diagonal
-            let multiplierX;
-            let multiplierY;
+            let multiplierX = (desiredPosition.x < initialPosition.x) ? -1 : (desiredPosition.x > initialPosition.x) ? 1 : 0;
+            let multiplierY = (desiredPosition.y < initialPosition.y) ? -1 : (desiredPosition.y > initialPosition.y) ? 1 : 0;
 
-            if(desiredPosition.x < initialPosition.x){
-                multiplierX = -1;
-            }else if(desiredPosition.x > initialPosition.x){
-                multiplierX = 1;
-            }else{
-                multiplierX = 0;
+            let passedPosition: Position = {
+                x: initialPosition.x + (i * multiplierX),
+                y: initialPosition.y + (i * multiplierY)
+            };
+            //check if the tile is the destination tile
+            if (samePosition(passedPosition, desiredPosition)) {
+                //    dealing with destination tile
+                if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                    return true;
+                }
+            } else {
+                //    dealing with passing tile
+                if (this.tileIsOccupied(passedPosition, boardState)) {
+                    break;
+                }
             }
+        }
+        return false;
+    }
 
-            if(desiredPosition.y < initialPosition.y){
-                multiplierY = -1;
-            }else if(desiredPosition.y > initialPosition.y){
-                multiplierY = 1;
-            }else{
-                multiplierY = 0;
-            }
+    kingMove(
+        initialPosition: Position,
+        desiredPosition: Position,
+        team: TeamType,
+        boardState: Piece[]
+    ): boolean {
+        for (let i = 1; i < 2; i++) {
+            //diagonal
+            let multiplierX = (desiredPosition.x < initialPosition.x) ? -1 : (desiredPosition.x > initialPosition.x) ? 1 : 0;
+            let multiplierY = (desiredPosition.y < initialPosition.y) ? -1 : (desiredPosition.y > initialPosition.y) ? 1 : 0;
+
             let passedPosition: Position = {
                 x: initialPosition.x + (i * multiplierX),
                 y: initialPosition.y + (i * multiplierY)
@@ -312,6 +328,9 @@ export default class Referee {
             case PieceType.QUEEN:
                 validMove = this.queenMove(initialPosition, desiredPosition, team, boardState);
                 break;
+            case PieceType.KING:
+                validMove = this.kingMove(initialPosition, desiredPosition, team, boardState);
+
         }
         return validMove;
     }
