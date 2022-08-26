@@ -51,33 +51,13 @@ export default class Referee {
         return false;
     }
 
-
-    isValidMove(
+    pawnMove(
         initialPosition: Position,
         desiredPosition: Position,
-        type: PieceType,
         team: TeamType,
         boardState: Piece[]
-    ) {
-        console.log("referee is checking the move...")
-        console.log(`previos: (${initialPosition.x},${initialPosition.y}) `);
-        console.log(`current: (${desiredPosition.x},${desiredPosition.y}) `);
-        console.log(`type: (${type}) `);
-        console.log(`team: (${team}) `);
+    ):boolean{
 
-        switch (type){
-            case PieceType.PAWN:
-                break;
-            case PieceType.KNIGHT:
-                break;
-            case PieceType.BISHOP:
-                break;
-            case PieceType.ROOK:
-                break;
-        }
-
-
-        if (type === PieceType.PAWN) {
             const specialRow = (team === TeamType.OUR) ? 1 : 6;
             const specialDirection = (team === TeamType.OUR) ? 1 : -1;
 
@@ -105,7 +85,38 @@ export default class Referee {
                     return true;
                 }
             }
-        } else if (type === PieceType.KNIGHT) {
+            return false;
+    }
+
+
+    isValidMove(
+        initialPosition: Position,
+        desiredPosition: Position,
+        type: PieceType,
+        team: TeamType,
+        boardState: Piece[]
+    ) {
+        console.log("referee is checking the move...")
+        console.log(`previos: (${initialPosition.x},${initialPosition.y}) `);
+        console.log(`current: (${desiredPosition.x},${desiredPosition.y}) `);
+        console.log(`type: (${type}) `);
+        console.log(`team: (${team}) `);
+
+        let validMode = false;
+        switch (type){
+            case PieceType.PAWN:
+               validMode = this.pawnMove(initialPosition, desiredPosition, team, boardState);
+                break;
+            case PieceType.KNIGHT:
+                break;
+            case PieceType.BISHOP:
+                break;
+            case PieceType.ROOK:
+                break;
+        }
+        return validMode;
+
+         if (type === PieceType.KNIGHT) {
             //    moving logic for the knight
             for (let i = -1; i < 2; i += 2) {
                 for (let j = -1; j < 2; j += 2) {
