@@ -193,6 +193,49 @@ export default class Referee {
         return false;
     }
 
+    bookMove(
+        initialPosition: Position,
+        desiredPosition: Position,
+        team: TeamType,
+        boardState: Piece[]
+    ):boolean{
+        //horizontal
+        if (initialPosition.y === desiredPosition.y) {
+            for (let i = 1; i < 8; i++) {
+                let multiplier = (desiredPosition.x < initialPosition.x) ? -1 : 1;
+
+                let passedPosition: Position = {x: initialPosition.x + (i * multiplier), y: initialPosition.y};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                }else {
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
+            }
+        }
+        //vertical
+        if (initialPosition.x === desiredPosition.x) {
+            for (let i = 1; i < 8; i++) {
+                let multiplier = (desiredPosition.y < initialPosition.y) ? -1 : 1;
+
+                let passedPosition: Position = {x: initialPosition.x, y: initialPosition.y + (i * multiplier)};
+                if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
+                    if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                        return true;
+                    }
+                }else {
+                    if(this.tileIsOccupied(passedPosition, boardState)){
+                        break;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     isValidMove(
         initialPosition: Position,
         desiredPosition: Position,
@@ -218,51 +261,9 @@ export default class Referee {
                 validMode = this.bishopMove(initialPosition, desiredPosition, team, boardState);
                 break;
             case PieceType.ROOK:
-
+                validMode = this.bookMove(initialPosition, desiredPosition, team, boardState);
                 break;
         }
         return validMode;
-
-          if (type === PieceType.BISHOP) {
-            //    moving logic for the BISHOP
-
-        } else if (type === PieceType.ROOK) {
-            //    moving logic for the BISHOP
-            //horizontal
-            if (initialPosition.y === desiredPosition.y) {
-                for (let i = 1; i < 8; i++) {
-                    let multiplier = (desiredPosition.x < initialPosition.x) ? -1 : 1;
-
-                    let passedPosition: Position = {x: initialPosition.x + (i * multiplier), y: initialPosition.y};
-                    if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
-                        if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
-                            return true;
-                        }
-                    }else {
-                        if(this.tileIsOccupied(passedPosition, boardState)){
-                            break;
-                        }
-                    }
-                }
-            }
-            //vertical
-            if (initialPosition.x === desiredPosition.x) {
-                for (let i = 1; i < 8; i++) {
-                    let multiplier = (desiredPosition.y < initialPosition.y) ? -1 : 1;
-
-                    let passedPosition: Position = {x: initialPosition.x, y: initialPosition.y + (i * multiplier)};
-                    if (passedPosition.x === desiredPosition.x && passedPosition.y === desiredPosition.y) {
-                        if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
-                            return true;
-                        }
-                    }else {
-                        if(this.tileIsOccupied(passedPosition, boardState)){
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 }
