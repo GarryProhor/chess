@@ -273,24 +273,26 @@ export default class Referee {
             }
 
 
-            //top right
-            if (desiredPosition.y > initialPosition.y && desiredPosition.x > initialPosition.x) {
-
-            }
-            //bottom right
-            if (desiredPosition.y < initialPosition.y && desiredPosition.x > initialPosition.x) {
-
-            }
-            //bottom left
-            if (desiredPosition.y < initialPosition.y && desiredPosition.x < initialPosition.x) {
-
-            }
-            //top left
-            if (desiredPosition.y > initialPosition.y && desiredPosition.x < initialPosition.x) {
-
+            //diagonal
+            let multiplierX = (desiredPosition.x < initialPosition.x) ? -1 : 1;
+            let multiplierY = (desiredPosition.y < initialPosition.y) ? -1 : 1;
+            let passedPosition: Position = {
+                x: initialPosition.x + (i * multiplierX),
+                y: initialPosition.y + (i * multiplierY)
+            };
+            //check if the tile is the destination tile
+            if (samePosition(passedPosition, desiredPosition)) {
+                //    dealing with destination tile
+                if (this.tileIsEmptyOrOccupiedByOpponent(passedPosition, boardState, team)) {
+                    return true;
+                }
+            } else {
+                //    dealing with passing tile
+                if (this.tileIsOccupied(passedPosition, boardState)) {
+                    break;
+                }
             }
         }
-
         return false;
     }
 
