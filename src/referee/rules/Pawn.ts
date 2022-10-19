@@ -37,3 +37,15 @@ export const pawnMove = (
     }
     return false;
 }
+
+export const GetPossiblePawnMoves = (pawn: Piece, boardState: Piece[]) : Position[] => {
+    const possibleMoves: Position[] = [];
+
+    const pawnDirection = pawn.team === TeamType.OUR ? 1 : -1;
+    if(!tileIsOccupied(
+        {x: pawn.position.x, y: pawn.position.y + pawnDirection},
+        boardState))
+        possibleMoves.push({x: pawn.position.x, y: pawn.position.y + pawnDirection})
+
+    return possibleMoves;
+}

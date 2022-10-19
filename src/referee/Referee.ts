@@ -1,5 +1,5 @@
 import {Piece, PieceType, Position, TeamType} from "../utils/Constants";
-import {pawnMove, kingMove, knightMove, queenMove, rookMove, bishopMove} from "./rules";
+import {pawnMove, kingMove, knightMove, queenMove, rookMove, bishopMove, GetPossiblePawnMoves} from "./rules";
 
 export default class Referee {
     isEnPassantMove(
@@ -68,5 +68,15 @@ export default class Referee {
 
         }
         return validMove;
+    }
+
+    getValidMovies(piece: Piece, boardState: Piece[]) : Position[]{
+        switch (piece.type)
+        {
+            case PieceType.PAWN:
+                return GetPossiblePawnMoves(piece, boardState);
+            default:
+                return [];
+        }
     }
 }
