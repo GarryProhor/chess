@@ -27,6 +27,12 @@ const Chessboard = () => {
 
 
     const grabPiece = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        setPieces((currentPieces) => {
+            return currentPieces.map(p => {
+                p.possibleMoves = [];
+                return p;
+            });
+        })
         const element = e.target as HTMLElement;
         const chessboard = chessboardRef.current;
         if (element.classList.contains('chess-piece') && chessboard) {
